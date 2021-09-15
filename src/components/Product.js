@@ -104,7 +104,7 @@ function Product(props) {
             <BorderColorIcon />
           </IconButton>
           <IconButton onClick={handleOpenDeleteDialog}>
-            <DeleteIcon />
+            <DeleteIcon color="primary"/>
           </IconButton>
         </TableCell>
       </TableRow>

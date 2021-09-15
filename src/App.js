@@ -1,13 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
 import { connect } from 'react-redux';
-import Button from '@material-ui/core/Button';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
+import {Typography,Button} from '@material-ui/core';
+import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import Paper from '@material-ui/core/Paper';
 import Fab from '@material-ui/core/Fab';
@@ -21,10 +16,21 @@ import Product from './components/Product';
 import axios from 'axios';
 import dataTransformer from './utils/dataTransformer';
 import { AddDrug, AddProduct, loadingDrug} from './actions/product';
-import { CircularProgress } from '@material-ui/core';
+import { CircularProgress, makeStyles } from '@material-ui/core';
 import './App.css'
 
+const useStyles = makeStyles((theme) => ({
+    flex: {
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      flexDirection: "column",
+      margin: theme.spacing(6,10)
+    }
+}));
+
 export function CollapsibleTable({ addProduct, drugs, showLoading, loading, addDrugItem }) {
+  const classes = useStyles()
   const [open, setOpen] = useState(false)
   const [text, setText] = useState('')
   useEffect(() => {
@@ -57,13 +63,17 @@ export function CollapsibleTable({ addProduct, drugs, showLoading, loading, addD
 
   if (loading) return <div className='progress'> <CircularProgress /></div>;
   return (
-    <div>
+    <div className={classes.flex}>
       <TableContainer component={Paper}>
         <Table aria-label="collapsible table">
           <TableHead>
             <TableRow>
               <TableCell />
-              <TableCell>Drug</TableCell>
+              <TableCell>
+                <Typography color="primary" variant="h6">
+                  Drug
+                </Typography>
+              </TableCell>
               <TableCell align="right"></TableCell>
             </TableRow>
           </TableHead>
