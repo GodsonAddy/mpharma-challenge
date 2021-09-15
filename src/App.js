@@ -34,7 +34,7 @@ export function CollapsibleTable({ addProduct, drugs, showLoading, loading, addD
         const normalizedDrug = dataTransformer(data?.products);
         addProduct(normalizedDrug);
       })
-  })
+  }, [])
 
   const openDialog = () => {
     setOpen(true);
