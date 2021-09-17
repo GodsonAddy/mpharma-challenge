@@ -6,6 +6,7 @@ export const EDIT_DRUG = 'EDIT_DRUG';
 export const EDIT_PRICE = 'EDIT_PRICE';
 export const LOADING = 'LOADING';
 export const DELETE_DRUG = 'DELETE_DRUG';
+export const ADD_PRICE = 'ADD_PRICE';
 
 export const AddProduct = (data) => {
   return (dispatch) => {
@@ -52,6 +53,15 @@ export const loadingDrug = () => {
     return dispatch => {
       return dispatch({
         type: LOADING
+      })
+    }
+}
+
+export const addPrice = (drugId, price, priceId) => {
+    return dispatch => {
+      return dispatch({
+        type: ADD_PRICE,
+        data: { drugId, price, priceId }
       })
     }
 }

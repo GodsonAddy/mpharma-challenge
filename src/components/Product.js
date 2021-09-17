@@ -1,5 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { connect } from 'react-redux';
+import { v4 as uuidv4 } from 'uuid';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Dialog from '@material-ui/core/Dialog';
@@ -23,7 +24,8 @@ import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import BorderColorIcon from '@material-ui/icons/BorderColor';
 import DeleteIcon from '@material-ui/icons/Delete';
 import debounce from '../utils/debounce';
-import { EditProduct, EditPrice, DeleteDrugItem } from '../actions/product';
+import { EditProduct, EditPrice, DeleteDrugItem, addPrice } from '../actions/product';
+import { AddBox } from '@material-ui/icons';
 
 const useRowStyles = makeStyles({
   root: {
@@ -34,8 +36,9 @@ const useRowStyles = makeStyles({
 });
 
 function Product(props) {
-  const { row, prices, editDrug, editPrice, deleteDrugItem } = props;
+  const { row, prices, editDrug, editPrice, deleteDrugItem, addPriceItem } = props;
   const [disabled, setDisabled] = useState(true)
+  const [newPrice, setNewPrice] = useState(0);
   const [openDelete, setOpenDelete] = useState(false)
   const [drugName, setDrugName] = useState(row.name || '');
   const [mPrices, setMPrices] = useState(Object.values(prices).reduce((acc, val) => {
@@ -43,6 +46,7 @@ function Product(props) {
     return acc;
   }, {}))
   const [open, setOpen] = useState(false);
+  const [openPriceDialog, setOpenPriceDialog] = useState(false);
   const classes = useRowStyles();
   const handleEdit = () => {
     setDisabled(false)
@@ -90,6 +94,26 @@ function Product(props) {
     deleteDrugItem(row.id)
   }
 
+  const showAddPriceDialog = () => {
+    setOpenPriceDialog(true)
+  }
+
+  const handlePriceDialogClose = () => {
+    setOpenPriceDialog(false);
+  }
+  
+  const handlePriceChange = (e) => {
+    setNewPrice(e.target.value);
+  }
+
+  const handleAddPrice = () => {
+    setOpenPriceDialog(false);
+    const id = uuidv4();
+    addPriceItem(row.id, newPrice, id);
+    const newPrices = { ...mPrices, [id]: { id, price: newPrice, disabled: true, date: (new Date()).toString() }}
+    setMPrices(newPrices)
+  }
+
   return (
     <React.Fragment>
       <TableRow className={classes.root}>
@@ -118,7 +142,9 @@ function Product(props) {
               <Table size="small" aria-label="purchases">
                 <TableHead>
                   <TableRow>
-                    <TableCell>Price</TableCell>
+                    <TableCell>Price <IconButton onClick={showAddPriceDialog}>
+                          <AddBox />
+                        </IconButton></TableCell>
                     <TableCell>Date</TableCell>
                   </TableRow>
                 </TableHead>
@@ -158,6 +184,23 @@ function Product(props) {
           </Button>
         </DialogActions>
       </Dialog>
+
+      <Dialog
+        open={openPriceDialog}
+        onClose={handlePriceDialogClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">Add Price</DialogTitle>
+        <DialogContent>
+          <TextField type='number' onChange={handlePriceChange} />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleAddPrice} color="primary">
+            Add Price
+          </Button>
+        </DialogActions>
+      </Dialog>
     </React.Fragment>
   );
 }
@@ -181,6 +224,7 @@ const mapStateToProps = ({ product }) => {
 const mapDispatchToProps = {
   editDrug: EditProduct,
   editPrice: EditPrice,
-  deleteDrugItem: DeleteDrugItem
+  deleteDrugItem: DeleteDrugItem,
+  addPriceItem: addPrice
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Product);

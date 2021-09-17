@@ -33,6 +33,7 @@ export function CollapsibleTable({ addProduct, drugs, showLoading, loading, addD
   const classes = useStyles()
   const [open, setOpen] = useState(false)
   const [text, setText] = useState('')
+  
   useEffect(() => {
     showLoading();
     axios.get('http://www.mocky.io/v2/5c3e15e63500006e003e9795')
@@ -55,6 +56,7 @@ export function CollapsibleTable({ addProduct, drugs, showLoading, loading, addD
     const value = e.target.value;
     setText(value);
   }
+
 
   const addMedicine = () => {
     setOpen(false)
