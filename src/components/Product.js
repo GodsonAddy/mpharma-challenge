@@ -26,6 +26,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import debounce from '../utils/debounce';
 import { EditProduct, EditPrice, DeleteDrugItem, addPrice } from '../actions/product';
 import { AddBox } from '@material-ui/icons';
+import { format } from 'date-fns';
 
 const useRowStyles = makeStyles({
   root: {
@@ -48,6 +49,7 @@ function Product(props) {
   const [open, setOpen] = useState(false);
   const [openPriceDialog, setOpenPriceDialog] = useState(false);
   const classes = useRowStyles();
+  
   const handleEdit = () => {
     setDisabled(false)
   }
@@ -110,7 +112,7 @@ function Product(props) {
     setOpenPriceDialog(false);
     const id = uuidv4();
     addPriceItem(row.id, newPrice, id);
-    const newPrices = { ...mPrices, [id]: { id, price: newPrice, disabled: true, date: (new Date()).toString() }}
+    const newPrices = { ...mPrices, [id]: { id, price: newPrice, disabled: true, date: format(new Date(), "MM-dd-yyyy HH:mm") }}
     setMPrices(newPrices)
   }
 
@@ -142,9 +144,12 @@ function Product(props) {
               <Table size="small" aria-label="purchases">
                 <TableHead>
                   <TableRow>
-                    <TableCell>Price <IconButton onClick={showAddPriceDialog}>
-                          <AddBox />
-                        </IconButton></TableCell>
+                    <TableCell>
+                      Price
+                      <IconButton onClick={showAddPriceDialog}>
+                        <AddBox />
+                      </IconButton>
+                    </TableCell>
                     <TableCell>Date</TableCell>
                   </TableRow>
                 </TableHead>

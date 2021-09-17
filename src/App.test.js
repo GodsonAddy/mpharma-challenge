@@ -1,6 +1,12 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent} from '@testing-library/react';
 import App from './App';
 import "@testing-library/jest-dom/extend-expect";
+
+let getByTestId;
+beforeEach(() => {
+  const app = render(<App />);
+  getByTestId = app.getByTestId
+});
 
 test('renders learn react link', () => {
   render(<App />);
@@ -9,25 +15,21 @@ test('renders learn react link', () => {
 });
 
 test("renders button correctly", () => {
-  const {getByTestId} = render(<App />);
   const clickButton = getByTestId("button");
-  expect(clickButton).toBeInTheDocument()
+  fireEvent.click(clickButton)
 })
 
 test("renders Fab without crashing", () => {
-  const {getByTestId} = render(<App />);
   const fabButton = getByTestId("Fab");
-  expect(fabButton).toBeInTheDocument()
+  fireEvent.click(fabButton)
 })
 
 test("renders text correctly", () => {
-  const {getByTestId} = render(<App />);
   const displayText = getByTestId("drug");
   expect(displayText.textContent).toBe("Drug")
 })
 
 test("renders display correctly", () => {
-  const {getByTestId} = render(<App />);
   const displayText = getByTestId("addDrug");
   expect(displayText.textContent).toBe("Add Drug")
 })
