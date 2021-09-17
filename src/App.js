@@ -72,7 +72,7 @@ export function CollapsibleTable({ addProduct, drugs, showLoading, loading, addD
             <TableRow>
               <TableCell />
               <TableCell>
-                <Typography color="primary" variant="h6">
+                <Typography color="primary" variant="h6" data-testid="drug">
                   Drug
                 </Typography>
               </TableCell>
@@ -86,7 +86,7 @@ export function CollapsibleTable({ addProduct, drugs, showLoading, loading, addD
           </TableBody>
         </Table>
       </TableContainer>
-      <Fab color="primary" onClick={openDialog} aria-label="add">
+      <Fab color="primary" onClick={openDialog} aria-label="add" data-testid="Fab">
         <AddIcon />
       </Fab>
       <Dialog
@@ -95,14 +95,14 @@ export function CollapsibleTable({ addProduct, drugs, showLoading, loading, addD
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">Add Drug</DialogTitle>
+        <DialogTitle id="alert-dialog-title" data-testid="addDrug">Add Drug</DialogTitle>
         <DialogContent>
-          <DialogContentText id="alert-dialog-description">
+          <DialogContentText id="alert-dialog-description" component={"div"}>
             <TextField value={text} onChange={handleTextChange}/>
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={addMedicine} color="primary">
+          <Button onClick={addMedicine} color="primary" data-testid="button">
             Save
           </Button>
         </DialogActions>
